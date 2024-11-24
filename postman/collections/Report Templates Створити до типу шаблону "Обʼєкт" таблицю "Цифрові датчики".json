@@ -1,0 +1,2428 @@
+{
+	"info": {
+		"_postman_id": "87bfb3d1-8d71-4fac-aaa9-b09e211f93d3",
+		"name": "Report Templates Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\"",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "10793317-87bfb3d1-8d71-4fac-aaa9-b09e211f93d3"
+	},
+	"item": [
+		{
+			"name": "Створити шаблон",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b7f1802e-e37c-43e4-a723-b1b007b40208",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "8cf3285d-80c1-4f3e-8159-35cf6e598d7b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"test_API_ID\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "ccc07c43-dc34-4f76-880f-ebb2e49eadea",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"elementType\": \"DEVICE\",\n  \"name\": \"Test_API_template\",\n  \"elementId\": null,\n  \"showGeodata\": false\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/templates",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"templates"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1781 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметри усі",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "212d33a1-7517-4c07-a47c-3bbb66beed0d",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "0211a842-a7fc-4376-a77f-dbff6000eded",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\",\"DATE\",\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check minimalDuration in the response\", function () {",
+							"    pm.expect(jsonData.minimalDuration).to.eql(0);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Check maximalDuration in the response\", function () {",
+							"    pm.expect(jsonData.maximalDuration).to.eql(0);",
+							"});",
+							"",
+							"pm.test(\"Check filterMinimalDuration in the response\", function () {",
+							"    pm.expect(jsonData.filterMinimalDuration).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check filterMaximalDuration in the response\", function () {",
+							"    pm.expect(jsonData.filterMaximalDuration).to.be.false;",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "2dbc21bd-4d8e-4d79-b725-c9fb161bb64d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\",\n    \"DATE\",\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false,\n  \"showDetails\": true,\n  \"showTotal\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1782 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Групування \"По даті\", Параметри Усі",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b459946b-c8ba-436f-ace3-d94cf2deb367",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "df1f6a55-ba0d-4d96-b648-37a23fbc5b47",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"DATE\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check minimalDuration in the response\", function () {",
+							"    pm.expect(jsonData.minimalDuration).to.eql(0);",
+							"});",
+							"",
+							"pm.test(\"Check maximalDuration in the response\", function () {",
+							"    pm.expect(jsonData.maximalDuration).to.eql(1);",
+							"});",
+							"",
+							"pm.test(\"Check filterMinimalDuration in the response\", function () {",
+							"    pm.expect(jsonData.filterMinimalDuration).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check filterMaximalDuration in the response\", function () {",
+							"    pm.expect(jsonData.filterMaximalDuration).to.be.true;",
+							"});",
+							"",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "a628cd26-7acb-4ae8-bfcf-144c8132cbca",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"DATE\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 1,\n  \"filterMaximalDuration\": true,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false,\n  \"showDetails\": true,\n  \"showTotal\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1783 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Групування \"По датчику\", Параметри \"Деталізація\"",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "59fc3ef8-f48d-41c4-9743-4c63f47d28bb",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "d8eddc54-6e42-4ce1-8c75-f87abced594d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "2c0ddced-c941-4a2c-b3cf-d38861c4152d",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false,\n  \"showDetails\": true,\n  \"showTotal\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1784 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметр деталізація",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d4c1ff79-8292-4747-ae25-42097fceb7f9",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c05f270-429e-4952-988d-ca22b3e9c6c9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\",\"DATE\",\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "472543a8-01ab-43b4-97b9-598f34e8182b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\",\n    \"DATE\",\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": false,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1785 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками, Групування Місяць, Параметр Всього",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b6e5ba3b-335a-465f-8fc4-895bdbbe59e8",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd6f414e-79df-4282-8de8-3b448f1b66f4",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "7e2dc3a4-75dc-4bb4-bb80-a149195ea793",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": false,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1786 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками, Групування Місяць, Параметр Деталізація",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1ed9f24f-7c9d-4724-b29c-e2c67c46933c",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "2baed1cd-0757-4f28-8cf9-19f750e766e9",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "0f2c10b9-585e-491e-a042-47b75fefebee",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": false,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1787 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками, Групування Місяць, Параметр Деталізація Copy",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c09762fa-5b4a-40cb-b06d-042c56dde413",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "da91c9b4-676a-418e-812e-22517a4d7a6b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"DATE\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "fa839098-8394-41e4-9a32-99fdbadfbe2c",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"DATE\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": false,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1788 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками, Групування не активне, Параметри не активні",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "3ea49eba-2687-44df-aa73-cbf3983ec63d",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "58da9fbd-00fa-4b14-9edb-564162744f83",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "60c0b389-a619-4904-8d27-95f5fd340325",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": false,\n  \"showTotal\": false,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1789 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками, Групування по Датчику, Параметр Всього",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a851508e-ea32-40f4-9105-737e90c6aa07",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b1f879d-f968-418a-9cbd-68cd339ac65b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "4ce408d3-6d04-4529-b948-61b5b1f25f4e",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": false,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1790 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Однією колонками, Групування по Даті, Параметр Всього",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "2c7a69b9-efb4-445f-a01f-0ff67327286b",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "f9741645-97f5-491f-a5c6-fd5e866d3bdf",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"DATE\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "ab36a8dd-3455-4e44-9cf0-dd52b2d677ff",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"DATE\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": false,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1791 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Однією колонками, Групування по Датчик, Параметр ВСІ",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "62a22c5e-84e3-4d4e-be5b-dd5e872e4c68",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e5bfe223-6756-455c-970a-9fca775c2451",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"AVERAGE_CONSUMPTION_BY_NORM_LPH\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "989fa4a2-90ce-47f9-94b2-26d3b7a90997",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1792 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Однією колонками, Групування ВСІ, Параметр Всього",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a75f87b1-b7b8-4902-b8e2-2659ecbcc408",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "b0d5f76d-966d-4ddb-a10d-a19be24646e8",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"MILEAGE\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\",\"DATE\",\"SENSOR\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.false;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "56db90f1-090d-4592-9d13-d06319cd9e4f",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"MILEAGE\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\",\n    \"DATE\",\n    \"SENSOR\"  \n    ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": false,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1793 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Однією колонками, Групування Місяць, Параметр Всі",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "0291f448-b4c8-4831-b2f5-5099011eb6a4",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "7062b4c9-2d45-45ad-85dd-2745754af8b7",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"MILEAGE\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"MONTH\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.true;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "be903728-5052-4ff0-8287-f6fc7e2f14a5",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"MILEAGE\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\"  \n    ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": true,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "M2M-1794 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Однією колонками, Групування Дата, Параметр Деталізація",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "4088e8f6-6683-46f2-87da-9392e3faeffb",
+						"exec": [
+							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"",
+							"// Виконання POST-запиту для авторизації",
+							"pm.sendRequest({",
+							"    method: 'POST',",
+							"    url: baseUrl + '/api/login',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            email: dillerAPITestAccount,",
+							"            password: dillerAPITestAccount",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Login error:', err);",
+							"    } else {",
+							"        // Перевірка, чи є токен у відповіді",
+							"        const responseBody = res.json();",
+							"        const token = responseBody.token;",
+							"        if (token) {",
+							"            // Зберігання токена у змінній середовища",
+							"            pm.environment.set(\"token\", token);",
+							"        } else {",
+							"            console.error(\"Token not found in response:\", responseBody);",
+							"        }",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "295aa85c-7186-4b55-a5c4-c671a42ad58d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Test title is Test\", function () {",
+							"    pm.expect(jsonData.title).to.eql(\"Test\");",
+							"});",
+							"",
+							"pm.test(\"Test tableType is \", function () {",
+							"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+							"});",
+							"",
+							"pm.test(\"Check param columns in the response\", function () {",
+							"    pm.expect(jsonData.columns).to.eql(\"CONSUMPTION_BY_NORM_LPH\");",
+							"});",
+							"",
+							"pm.test(\"Check param groupings in the response\", function () {",
+							"    pm.expect(jsonData.groupings).to.eql([\"DATE\"]);",
+							"});",
+							"",
+							"pm.test(\"Check param showDetails in the response\", function () {",
+							"    pm.expect(jsonData.showDetails).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Check param showTotal in the response\", function () {",
+							"    pm.expect(jsonData.showTotal).to.be.false;",
+							"});",
+							"",
+							"",
+							"// Отримання базової URL-адреси та токена авторизації",
+							"const baseUrl = pm.environment.get(\"baseUrl\");",
+							"const token = pm.environment.get(\"token\");",
+							"",
+							"// Виконання DELETE-запиту для видалення об'єкта",
+							"pm.sendRequest({",
+							"    method: 'DELETE',",
+							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    header: {",
+							"        'Content-Type': 'application/json',",
+							"        'Authorization': `Bearer ${token}`",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.error('Delete device error:', err);",
+							"    } else {",
+							"        if (res.status === \"OK\") {",
+							"            console.log(\"Device deleted successfully:\", jsonData.id);",
+							"        } else {",
+							"            console.error(\"Failed to delete device. Status code:\", res.status);",
+							"        }",
+							"    }",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "2b364427-1c91-4138-b4f7-13ce17953501",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"CONSUMPTION_BY_NORM_LPH\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"DATE\"  \n    ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n \"showDetails\": true,\n  \"showTotal\": false,\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"report",
+						"template",
+						":templateId",
+						"tables"
+					],
+					"variable": [
+						{
+							"key": "templateId",
+							"value": "{{test_API_ID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f703d953-de46-429d-9532-bef89d9013d3",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "7114bd33-8e16-4338-9620-e71046b765ff",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "5660f068-45dc-41bf-9614-79cc7e432b75",
+			"key": "tablesID",
+			"value": ""
+		},
+		{
+			"id": "74b662f2-3c8c-4840-9c0a-ab29c0a18876",
+			"key": "test_API_ID",
+			"value": ""
+		}
+	]
+}
