@@ -7,12 +7,1348 @@
 	},
 	"item": [
 		{
+			"name": "M2M-1815 Виконати звіт для обʼєкта з таблицею цифрові датчики",
+			"item": [
+				{
+					"name": "Створити шаблон",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "962e1905-74ee-409e-8a82-8c0446587b21",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"test_API_ID\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c3de2068-3a36-4a92-881e-038e0030e7dd",
+								"exec": [
+									"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+									"const baseUrl = pm.environment.get(\"baseUrl\");",
+									"",
+									"// Виконання POST-запиту для авторизації",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: baseUrl + '/api/login',",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            email: dillerAPITestAccount,",
+									"            password: dillerAPITestAccount",
+									"        })",
+									"    }",
+									"}, function (err, res) {",
+									"    if (err) {",
+									"        console.error('Login error:', err);",
+									"    } else {",
+									"        // Перевірка, чи є токен у відповіді",
+									"        const responseBody = res.json();",
+									"        const token = responseBody.token;",
+									"        if (token) {",
+									"            // Зберігання токена у змінній середовища",
+									"            pm.environment.set(\"token\", token);",
+									"        } else {",
+									"            console.error(\"Token not found in response:\", responseBody);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "ccc07c43-dc34-4f76-880f-ebb2e49eadea",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"elementType\": \"DEVICE\",\n  \"name\": \"Test_API_template\",\n  \"elementId\": null,\n  \"showGeodata\": false\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/report/templates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметри усі",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "212d33a1-7517-4c07-a47c-3bbb66beed0d",
+								"exec": [
+									"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+									"const baseUrl = pm.environment.get(\"baseUrl\");",
+									"",
+									"// Виконання POST-запиту для авторизації",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: baseUrl + '/api/login',",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            email: dillerAPITestAccount,",
+									"            password: dillerAPITestAccount",
+									"        })",
+									"    }",
+									"}, function (err, res) {",
+									"    if (err) {",
+									"        console.error('Login error:', err);",
+									"    } else {",
+									"        // Перевірка, чи є токен у відповіді",
+									"        const responseBody = res.json();",
+									"        const token = responseBody.token;",
+									"        if (token) {",
+									"            // Зберігання токена у змінній середовища",
+									"            pm.environment.set(\"token\", token);",
+									"        } else {",
+									"            console.error(\"Token not found in response:\", responseBody);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0211a842-a7fc-4376-a77f-dbff6000eded",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Test title is Test\", function () {",
+									"    pm.expect(jsonData.title).to.eql(\"Test\");",
+									"});",
+									"",
+									"pm.test(\"Test tableType is \", function () {",
+									"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_DIGITAL_SENSORS\");",
+									"});",
+									"",
+									"pm.test(\"Check param columns in the response\", function () {",
+									"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+									"});",
+									"",
+									"pm.test(\"Check param groupings in the response\", function () {",
+									"    pm.expect(jsonData.groupings).to.eql([\"MONTH\",\"DATE\",\"SENSOR\"]);",
+									"});",
+									"",
+									"pm.test(\"Check param showDetails in the response\", function () {",
+									"    pm.expect(jsonData.showDetails).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check param showTotal in the response\", function () {",
+									"    pm.expect(jsonData.showTotal).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check minimalDuration in the response\", function () {",
+									"    pm.expect(jsonData.minimalDuration).to.eql(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Check maximalDuration in the response\", function () {",
+									"    pm.expect(jsonData.maximalDuration).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Check filterMinimalDuration in the response\", function () {",
+									"    pm.expect(jsonData.filterMinimalDuration).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Check filterMaximalDuration in the response\", function () {",
+									"    pm.expect(jsonData.filterMaximalDuration).to.be.false;",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2dbc21bd-4d8e-4d79-b725-c9fb161bb64d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\",\n    \"DATE\",\n    \"SENSOR\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false,\n  \"showDetails\": true,\n  \"showTotal\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"tables"
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Виконати звіт",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f72a12df-6d8d-44cd-a8bf-e3932c090ee7",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 7); // Віднімаємо 7 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d79a0c6f-99ed-4dc9-beee-b3514f10ee8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Test tables is a array\", function () {",
+									"    pm.expect(jsonData.tables).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Test array has object\", function () {",
+									"    pm.expect(jsonData.tables.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Test columns match expected values in order\", function () {",
+									"    const expectedColumns = [",
+									"        \"SENSOR_NAME\",",
+									"        \"START_INTERVAL\",",
+									"        \"END_INTERVAL\",",
+									"        \"DURATION\",",
+									"        \"START_LOCATION\",",
+									"        \"END_LOCATION\",",
+									"        \"MILEAGE\",",
+									"        \"ACTIVATIONS_COUNT\",",
+									"        \"CONSUMPTION_BY_NORM_LPH\",",
+									"        \"CONSUMPTION_BY_NORM_LP100KM\",",
+									"        \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",",
+									"        \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",",
+									"        \"ABS_FUEL_CONSUMPTION\",",
+									"        \"AVERAGE_ABS_FUEL_CONSUMPTION\",",
+									"        \"INSTANT_FUEL_CONSUMPTION\",",
+									"        \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",",
+									"        \"FUEL_LEVEL_CONSUMPTION\",",
+									"        \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"",
+									"    ];",
+									"",
+									"    pm.expect(jsonData.tables[0].columns).to.eql(expectedColumns);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e355f0cf-8e0b-4f96-8d4f-8dd15bc1ad2d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/execute?elementId={{id_Alfa_Romeo}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"execute"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{id_Alfa_Romeo}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "M2M-1817 Export to PDF",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79fad800-4a90-4900-9071-45f4a7c87b32",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Content-Type as PDF\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/pdf\");",
+									"});",
+									"",
+									"pm.test(\"Response body has a reasonable size for PDF\", function () {",
+									"    const responseSize = pm.response.text().length;",
+									"    pm.expect(responseSize).to.be.above(1024); // Мінімальний розмір PDF",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "592b73d1-29dd-413c-8b6f-9f5c37662a56",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 1); // Віднімаємо 1 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "07389441-5e3a-424f-b426-13bfa4627247",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/pdf?elementId={{id_Alfa_Romeo}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"pdf"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{id_Alfa_Romeo}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "M2M-1818 Export to XLS",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79fad800-4a90-4900-9071-45f4a7c87b32",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Content-Type as PDF\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/vnd.ms-excel\");",
+									"});",
+									"",
+									"pm.test(\"Response body has a reasonable size for XLS\", function () {",
+									"    const responseSize = pm.response.text().length;",
+									"    pm.expect(responseSize).to.be.above(1024); // Мінімальний розмір PDF",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "592b73d1-29dd-413c-8b6f-9f5c37662a56",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 1); // Віднімаємо 1 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8f6815df-4919-4b60-b438-5f9a70380dd0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/xls?elementId={{id_Alfa_Romeo}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"xls"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{id_Alfa_Romeo}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Видалення шаблону звіту",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "369ad40e-8b12-49e8-954e-b862bfc0030f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "17dda7a9-9196-43d6-b646-2f1c0c8a0542",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "f8e0e763-0c86-45c3-bb41-1b4557be2500",
+			"description": "Виконати звіт для обʼєкта з таблицею цифрові датчики з усіма стовпцями з усіма налаштуваннями Execute the report by template (GET запит)"
+		},
+		{
+			"name": "M2M-1816 Виконати звіт для Групи обʼєктів з таблицею цифрові датчики Copy",
+			"item": [
+				{
+					"name": "Створити шаблон",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "962e1905-74ee-409e-8a82-8c0446587b21",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"test_API_ID\", jsonData.id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c3de2068-3a36-4a92-881e-038e0030e7dd",
+								"exec": [
+									"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+									"const baseUrl = pm.environment.get(\"baseUrl\");",
+									"",
+									"// Виконання POST-запиту для авторизації",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: baseUrl + '/api/login',",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            email: dillerAPITestAccount,",
+									"            password: dillerAPITestAccount",
+									"        })",
+									"    }",
+									"}, function (err, res) {",
+									"    if (err) {",
+									"        console.error('Login error:', err);",
+									"    } else {",
+									"        // Перевірка, чи є токен у відповіді",
+									"        const responseBody = res.json();",
+									"        const token = responseBody.token;",
+									"        if (token) {",
+									"            // Зберігання токена у змінній середовища",
+									"            pm.environment.set(\"token\", token);",
+									"        } else {",
+									"            console.error(\"Token not found in response:\", responseBody);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "8514c175-22ac-49cf-a008-9c52726c9eba",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"elementType\": \"DEVICE_GROUP\",\n  \"name\": \"Test_API_template_G\",\n  \"elementId\": null,\n  \"showGeodata\": false\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/report/templates",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметри усі",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "212d33a1-7517-4c07-a47c-3bbb66beed0d",
+								"exec": [
+									"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
+									"const baseUrl = pm.environment.get(\"baseUrl\");",
+									"",
+									"// Виконання POST-запиту для авторизації",
+									"pm.sendRequest({",
+									"    method: 'POST',",
+									"    url: baseUrl + '/api/login',",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            email: dillerAPITestAccount,",
+									"            password: dillerAPITestAccount",
+									"        })",
+									"    }",
+									"}, function (err, res) {",
+									"    if (err) {",
+									"        console.error('Login error:', err);",
+									"    } else {",
+									"        // Перевірка, чи є токен у відповіді",
+									"        const responseBody = res.json();",
+									"        const token = responseBody.token;",
+									"        if (token) {",
+									"            // Зберігання токена у змінній середовища",
+									"            pm.environment.set(\"token\", token);",
+									"        } else {",
+									"            console.error(\"Token not found in response:\", responseBody);",
+									"        }",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0211a842-a7fc-4376-a77f-dbff6000eded",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Test title is Test\", function () {",
+									"    pm.expect(jsonData.title).to.eql(\"Test\");",
+									"});",
+									"",
+									"pm.test(\"Test tableType is \", function () {",
+									"    pm.expect(jsonData.tableType).to.eql(\"DEVICE_GROUP_DIGITAL_SENSORS\");",
+									"});",
+									"",
+									"pm.test(\"Check param columns in the response\", function () {",
+									"    pm.expect(jsonData.columns).to.eql(\"SENSOR_NAME,START_INTERVAL,END_INTERVAL,DURATION,START_LOCATION,END_LOCATION,MILEAGE,ACTIVATIONS_COUNT,CONSUMPTION_BY_NORM_LPH,CONSUMPTION_BY_NORM_LP100KM,AVERAGE_CONSUMPTION_BY_NORM_LPH,AVERAGE_CONSUMPTION_BY_NORM_LP100KM,ABS_FUEL_CONSUMPTION,AVERAGE_ABS_FUEL_CONSUMPTION,INSTANT_FUEL_CONSUMPTION,AVERAGE_INSTANT_FUEL_CONSUMPTION,FUEL_LEVEL_CONSUMPTION,AVERAGE_FUEL_LEVEL_CONSUMPTION\");",
+									"});",
+									"",
+									"pm.test(\"Check param groupings in the response\", function () {",
+									"    const groupings = [",
+									"    \"MONTH\",",
+									"    \"DATE\",",
+									"    \"SENSOR\",",
+									"    \"DEVICE\"]",
+									"    pm.expect(jsonData.groupings).to.eql(groupings);",
+									"});",
+									"",
+									"pm.test(\"Check param showDetails in the response\", function () {",
+									"    pm.expect(jsonData.showDetails).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check param showTotal in the response\", function () {",
+									"    pm.expect(jsonData.showTotal).to.be.true;",
+									"});",
+									"",
+									"pm.test(\"Check minimalDuration in the response\", function () {",
+									"    pm.expect(jsonData.minimalDuration).to.eql(0);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Check maximalDuration in the response\", function () {",
+									"    pm.expect(jsonData.maximalDuration).to.eql(0);",
+									"});",
+									"",
+									"pm.test(\"Check filterMinimalDuration in the response\", function () {",
+									"    pm.expect(jsonData.filterMinimalDuration).to.be.false;",
+									"});",
+									"",
+									"pm.test(\"Check filterMaximalDuration in the response\", function () {",
+									"    pm.expect(jsonData.filterMaximalDuration).to.be.false;",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e7549ca9-3f8e-4d9b-b1f5-d851545003e7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Test\",\n  \"tableType\": \"DEVICE_GROUP_DIGITAL_SENSORS\",\n  \"tableColumns\": [\n    \"SENSOR_NAME\",\n    \"START_INTERVAL\",\n    \"END_INTERVAL\",\n    \"DURATION\",\n    \"START_LOCATION\",\n    \"END_LOCATION\",\n    \"MILEAGE\",\n    \"ACTIVATIONS_COUNT\",\n    \"CONSUMPTION_BY_NORM_LPH\",\n    \"CONSUMPTION_BY_NORM_LP100KM\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",\n    \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",\n    \"ABS_FUEL_CONSUMPTION\",\n    \"AVERAGE_ABS_FUEL_CONSUMPTION\",\n    \"INSTANT_FUEL_CONSUMPTION\",\n    \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",\n    \"FUEL_LEVEL_CONSUMPTION\",\n    \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"\n  ],\n  \"position\": 0,\n  \"groupings\": [\n    \"MONTH\",\n    \"DATE\",\n    \"SENSOR\",\n    \"DEVICE\"\n  ],\n  \"extraDeviceIds\": [\n    0\n  ],\n  \"extraGeofenceIds\": [\n    0\n  ],\n  \"extraDeviceGroupIds\": [\n    0\n  ],\n  \"extraGeofenceGroupIds\": [\n    0\n  ],\n  \"minimalDuration\": 0,\n  \"filterMinimalDuration\": false,\n  \"maximalDuration\": 0,\n  \"filterMaximalDuration\": false,\n  \"sensorAttributes\": \"string\",\n  \"additionalSensorAttributes\": \"string\",\n  \"filterAdditionalSensorAttributes\": false,\n  \"filterSensorAttributes\": false,\n  \"showDetails\": true,\n  \"showTotal\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/tables",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"tables"
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Виконати звіт",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f72a12df-6d8d-44cd-a8bf-e3932c090ee7",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 7); // Віднімаємо 7 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d79a0c6f-99ed-4dc9-beee-b3514f10ee8c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Test tables is a array\", function () {",
+									"    pm.expect(jsonData.tables).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(\"Test array has object\", function () {",
+									"    pm.expect(jsonData.tables.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"Test columns match expected values in order\", function () {",
+									"    const expectedColumns = [",
+									"        \"SENSOR_NAME\",",
+									"        \"START_INTERVAL\",",
+									"        \"END_INTERVAL\",",
+									"        \"DURATION\",",
+									"        \"START_LOCATION\",",
+									"        \"END_LOCATION\",",
+									"        \"MILEAGE\",",
+									"        \"ACTIVATIONS_COUNT\",",
+									"        \"CONSUMPTION_BY_NORM_LPH\",",
+									"        \"CONSUMPTION_BY_NORM_LP100KM\",",
+									"        \"AVERAGE_CONSUMPTION_BY_NORM_LPH\",",
+									"        \"AVERAGE_CONSUMPTION_BY_NORM_LP100KM\",",
+									"        \"ABS_FUEL_CONSUMPTION\",",
+									"        \"AVERAGE_ABS_FUEL_CONSUMPTION\",",
+									"        \"INSTANT_FUEL_CONSUMPTION\",",
+									"        \"AVERAGE_INSTANT_FUEL_CONSUMPTION\",",
+									"        \"FUEL_LEVEL_CONSUMPTION\",",
+									"        \"AVERAGE_FUEL_LEVEL_CONSUMPTION\"",
+									"    ];",
+									"",
+									"    pm.expect(jsonData.tables[0].columns).to.eql(expectedColumns);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "d076678d-ec9d-487b-aecf-4038faf12a32",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/execute?elementId={{do_not_removeGroupID}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"execute"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{do_not_removeGroupID}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "M2M-1819 Export to PDF Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79fad800-4a90-4900-9071-45f4a7c87b32",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Content-Type as PDF\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/pdf\");",
+									"});",
+									"",
+									"pm.test(\"Response body has a reasonable size for PDF\", function () {",
+									"    const responseSize = pm.response.text().length;",
+									"    pm.expect(responseSize).to.be.above(1024); // Мінімальний розмір PDF",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "592b73d1-29dd-413c-8b6f-9f5c37662a56",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 1); // Віднімаємо 1 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "f3e7dd3f-03fa-4bd1-95ec-b6b41f631869",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/pdf?elementId={{do_not_removeGroupID}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"pdf"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{do_not_removeGroupID}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "M2M-1820 Export to XLS Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "79fad800-4a90-4900-9071-45f4a7c87b32",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has Content-Type as PDF\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/vnd.ms-excel\");",
+									"});",
+									"",
+									"pm.test(\"Response body has a reasonable size for XLS\", function () {",
+									"    const responseSize = pm.response.text().length;",
+									"    pm.expect(responseSize).to.be.above(1024); // Мінімальний розмір PDF",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "592b73d1-29dd-413c-8b6f-9f5c37662a56",
+								"exec": [
+									"// Функція для форматування дати в потрібний формат",
+									"function formatDate(date) {",
+									"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+									"}",
+									"",
+									"// Сьогоднішня дата",
+									"let today = new Date();",
+									"let dateTo = formatDate(today);",
+									"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+									"",
+									"// Дата на 7 днів раніше",
+									"let pastDate = new Date();",
+									"pastDate.setDate(today.getDate() - 1); // Віднімаємо 1 днів",
+									"let dateFrom = formatDate(pastDate);",
+									"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
+									"",
+									"console.log(\"Дата з \" + dateTo)",
+									"console.log(\"Дата по \" + dateFrom)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b9109c3a-6908-4e17-977c-c72a644f097f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:templateId/xls?elementId={{do_not_removeGroupID}}&dateFrom={{dateFrom}}&dateTo={{dateTo}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":templateId",
+								"xls"
+							],
+							"query": [
+								{
+									"key": "elementId",
+									"value": "{{do_not_removeGroupID}}"
+								},
+								{
+									"key": "dateFrom",
+									"value": "{{dateFrom}}"
+								},
+								{
+									"key": "dateTo",
+									"value": "{{dateTo}}"
+								}
+							],
+							"variable": [
+								{
+									"key": "templateId",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Видалення шаблону звіту",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "369ad40e-8b12-49e8-954e-b862bfc0030f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "e4a9410b-77b7-4cec-a4c5-3ff622d61693",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/report/template/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"report",
+								"template",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{test_API_ID}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "d00079dc-c299-4e9d-ad49-ac51615aa681",
+			"description": "Виконати звіт для Групи обʼєктів з таблицею цифрові датчики з усіма стовпцями з усіма налаштуваннями Execute the report by template (GET запит)"
+		},
+		{
 			"name": "Створити шаблон",
 			"event": [
 				{
+					"listen": "test",
+					"script": {
+						"id": "962e1905-74ee-409e-8a82-8c0446587b21",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"",
+							"pm.collectionVariables.set(\"test_API_ID\", jsonData.id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
 					"listen": "prerequest",
 					"script": {
-						"id": "b7f1802e-e37c-43e4-a723-b1b007b40208",
+						"id": "c3de2068-3a36-4a92-881e-038e0030e7dd",
 						"exec": [
 							"const dillerAPITestAccount = pm.environment.get(\"dillerAPITestAccount\");",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
@@ -50,26 +1386,9 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"id": "8cf3285d-80c1-4f3e-8159-35cf6e598d7b",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"var jsonData = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"test_API_ID\", jsonData.id);"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
 				}
 			],
-			"id": "ccc07c43-dc34-4f76-880f-ebb2e49eadea",
+			"id": "6b983257-0b94-420d-bd94-7ec48b38b6ab",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -110,7 +1429,7 @@
 			"response": []
 		},
 		{
-			"name": "M2M-1781 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметри усі",
+			"name": "M2M-1781 Створити до типу шаблону \"Обʼєкт\" таблицю \"Цифрові датчики\" з Усіма колонками ,Усі активні групування, Параметри усі Copy",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -216,7 +1535,7 @@
 							"const token = pm.environment.get(\"token\");",
 							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
 							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
@@ -243,7 +1562,7 @@
 					}
 				}
 			],
-			"id": "2dbc21bd-4d8e-4d79-b725-c9fb161bb64d",
+			"id": "11ba1dea-5bc6-4967-9b9e-171540713860",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -392,11 +1711,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -552,11 +1872,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -712,11 +2033,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -872,11 +2194,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1032,11 +2355,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1192,11 +2516,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1352,11 +2677,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1512,11 +2838,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1672,11 +2999,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1832,11 +3160,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -1992,11 +3321,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -2152,11 +3482,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -2312,11 +3643,12 @@
 							"// Отримання базової URL-адреси та токена авторизації",
 							"const baseUrl = pm.environment.get(\"baseUrl\");",
 							"const token = pm.environment.get(\"token\");",
+							"const test_API_ID = pm.collectionVariables.get(\"test_API_ID\");",
 							"",
-							"// Виконання DELETE-запиту для видалення об'єкта",
+							"// Виконання DELETE-запиту для видалення таблиці",
 							"pm.sendRequest({",
 							"    method: 'DELETE',",
-							"    url: `${baseUrl}/api/report/template/330/table/${jsonData.id}`,",
+							"    url: `${baseUrl}/api/report/template/${test_API_ID}/table/${jsonData.id}`,",
 							"    header: {",
 							"        'Content-Type': 'application/json',",
 							"        'Authorization': `Bearer ${token}`",
@@ -2389,14 +3721,39 @@
 			"response": []
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "f703d953-de46-429d-9532-bef89d9013d3",
+				"id": "877cb454-91a9-4a59-ba59-08cb0765a370",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
+					"// Функція для форматування дати в потрібний формат",
+					"function formatDate(date) {",
+					"    return date.toISOString().slice(0, 19); // Відрізаємо лише частину YYYY-MM-DDTHH:mm:ss",
+					"}",
+					"",
+					"// Сьогоднішня дата",
+					"let today = new Date();",
+					"let dateTo = formatDate(today);",
+					"pm.collectionVariables.set(\"dateTo\", dateTo); // Встановлюємо змінну dateTo",
+					"",
+					"// Дата на 7 днів раніше",
+					"let pastDate = new Date();",
+					"pastDate.setDate(today.getDate() - 7); // Віднімаємо 7 днів",
+					"let dateFrom = formatDate(pastDate);",
+					"pm.collectionVariables.set(\"dateFrom\", dateFrom); // Встановлюємо змінну dateFrom",
 					""
 				]
 			}
@@ -2404,7 +3761,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7114bd33-8e16-4338-9620-e71046b765ff",
+				"id": "6f657d47-40de-46b7-9890-c7ffd0e05ab4",
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
@@ -2415,13 +3772,18 @@
 	],
 	"variable": [
 		{
-			"id": "5660f068-45dc-41bf-9614-79cc7e432b75",
-			"key": "tablesID",
+			"id": "0801bd64-a66e-4d6c-825a-29f56fb731c8",
+			"key": "test_API_ID",
+			"value": 355
+		},
+		{
+			"id": "f7b28020-2307-4e3a-93df-9a582023d00c",
+			"key": "dateTo",
 			"value": ""
 		},
 		{
-			"id": "74b662f2-3c8c-4840-9c0a-ab29c0a18876",
-			"key": "test_API_ID",
+			"id": "3ee7e386-7f29-471d-9cb3-b361c12e3544",
+			"key": "dateFrom",
 			"value": ""
 		}
 	]
